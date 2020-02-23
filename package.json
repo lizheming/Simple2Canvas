@@ -4,7 +4,9 @@
   "description": "generate image with json data by canvas",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "demo:dev": "demosify --serve",
+    "demo:prod": "demosify --prod"
   },
   "repository": {
     "type": "git",
@@ -29,9 +31,10 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
+    "@demosify/core": "^0.6.0",
+    "babel-loader": "^8.0.6",
     "babel-plugin-transform-async-to-promises": "^0.8.15",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11",
-    "babel-loader": "^8.0.6"
+    "webpack-cli": "^3.3.11"
   }
 }
