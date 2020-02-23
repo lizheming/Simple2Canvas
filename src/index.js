@@ -6,8 +6,11 @@ const Renders = {
 };
 
 function generator({width, height, rate = 1, render = 'html', elements}) {
+  width *= rate;
+  height *= rate;
+
   const Render = typeof render === 'function' ? render : (Renders[render] || Renders.html);
-  render = new Render(width, height);
+  render = new Render(width, height, {rate});
 
   elements = elements.filter(({type}) => typeof type === 'function' || typeof render[type] === 'function');
   const processes = elements.reduce((defer, opt) => {

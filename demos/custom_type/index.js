@@ -1,6 +1,7 @@
 const options = {
   width: 360,
   height: 564,
+  rate: 3,
   elements: [
     {type: 'rect', width: 360, height: 564, fill: '#0091f9', top: 0, left: 0},
     {type: 'image', url: 'https://p2.ssl.qhimgs4.com/t011c90ac743cf16dfb.png', width: 360, height: 166, top: 0, left: 0},
@@ -8,22 +9,24 @@ const options = {
     //谣言卡片上半部分的蓝色背景
     {
       type: function({url, top: y, left: x, width, height}) {
-          const ctx = this.ctx;
-          return new Promise((resolve, reject) => {
-          const img = document.createElement('img');
-          img.crossOrigin = '*';
-          img.onload = function() {
-              ctx.save();
-              ctx.clip();
-              ctx.drawImage(img, x, y, width, height);
-              ctx.restore();
-              img.parentNode.removeChild(img);
-              resolve();
-          }
-          img.onerror = reject;
-          img.src = url;
-          document.body.appendChild(img);
-          })
+        [x, y, width, height] = [x, y, width, height].map(v => v * this.rate);
+      
+        const ctx = this.ctx;
+        return new Promise((resolve, reject) => {
+        const img = document.createElement('img');
+        img.crossOrigin = '*';
+        img.onload = function() {
+          ctx.save();
+          ctx.clip();
+          ctx.drawImage(img, x, y, width, height);
+          ctx.restore();
+          img.parentNode.removeChild(img);
+          resolve();
+        }
+        img.onerror = reject;
+        img.src = url;
+        document.body.appendChild(img);
+        })
       },
       url: 'https://p5.ssl.qhimg.com/t01d6f520aa46d3306f.png',
       width: 330,
@@ -103,6 +106,8 @@ const options = {
 (async () => {
   const canvas = await simple2canvas(options);
   const img = document.createElement('img');
+  img.style.width = options.width + 'px';
+  img.style.height = options.height + 'px';
   img.src = canvas.toDataURL();
   document.body.appendChild(img);
 })();

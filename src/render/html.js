@@ -1,19 +1,22 @@
 import Render from './render';
 
 export default class HTMLRender extends Render {
-  constructor(width, height) {
+  constructor(width, height, {rate}) {
     super(width, height);
 
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
 
+    this.rate = rate;
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
   }
 
   //矩形
   rect({top: y, left: x, width: w, height: h, fill, round: r}) {
+    [x, y, w, h] = [x, y, w, h].map(v => v * this.rate);
+
     const {ctx} = this;
 
     ctx.save();
@@ -38,6 +41,8 @@ export default class HTMLRender extends Render {
 
   //图片
   image({url, top: y, left: x, width, height}) {
+    [x, y, width, height] = [x, y, width, height].map(v => v * this.rate);
+
     const {ctx} = this;
     return new Promise((resolve, reject) => {
       ctx.save();
@@ -64,25 +69,27 @@ export default class HTMLRender extends Render {
   }
 
   //文字
-  text({text, top, left, fontSize, lineHeight, color, textAlign, fontWeight}) {
+  text({text, top, left, fontSize, lineHeight, color, textAlign, fontWeight, width}) {
     const {ctx} = this;
-    ctx.save();
+    [top, left, fontSize, lineHeight, width] = [top, left, fontSize, lineHeight, width].map(v => v * this.rate);
 
+    ctx.save();
     ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
     ctx.fillStyle = color;
     ctx.textAlign = textAlign || 'left';
 
     top = top + lineHeight - Math.max((lineHeight - fontSize)/2, 0);
-    ctx.fillText(text, left, top);
+    ctx.fillText(text, left, top, width);
     ctx.restore();
     return Promise.resolve(this);
   }
 
   //多行文字
   wrapText({text, top, left, fontSize, lineHeight, color, width, height, textAlign, fontWeight}) {
-    const {ctx} = this;
+    const {ctx} = this; 
     
     ctx.save();
+    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
     var arrText = text.split('');
     var line = '';
     var result = [];
@@ -99,13 +106,14 @@ export default class HTMLRender extends Render {
       }
     }
     result.push({line, top, left});
+    ctx.restore();
+
     result.forEach(({line: text, top, left}, idx) => {
       if(height && (idx + 1) * lineHeight > height) {
         return;
       }
       this.text({text, top, left, fontSize, lineHeight, color, width, textAlign, fontWeight});
     });
-    ctx.restore();
     return result;
   }
 }
