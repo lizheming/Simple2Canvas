@@ -36,5 +36,8 @@
     "babel-plugin-transform-async-to-promises": "^0.8.15",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "canvas": "^2.6.1"
   }
 }

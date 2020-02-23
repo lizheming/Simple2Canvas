@@ -1,8 +1,10 @@
 import Render from './render/render';
 import HTMLRender from './render/html';
+import NodeRender from './render/node';
 
 const Renders = {
-  html: HTMLRender
+  html: HTMLRender,
+  node: NodeRender
 };
 
 function generator({width, height, rate = 1, render = 'html', elements}) {
