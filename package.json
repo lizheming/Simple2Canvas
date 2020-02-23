@@ -14,7 +14,9 @@
     "canvas",
     "json",
     "image",
-    "generate"
+    "generate",
+    "simple2canvas",
+    "html2canvas"
   ],
   "author": "lizheming <i@imnerd.org>",
   "license": "MIT",
