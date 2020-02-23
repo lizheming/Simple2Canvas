@@ -31,9 +31,7 @@
     "@babel/preset-env": "^7.8.4",
     "babel-plugin-transform-async-to-promises": "^0.8.15",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
-  },
-  "dependencies": {
+    "webpack-cli": "^3.3.11",
     "babel-loader": "^8.0.6"
   }
 }
