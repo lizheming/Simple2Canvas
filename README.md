@@ -1,5 +1,5 @@
 # Simple2Canvas
-Generate image with json data by canvas
+Generate image with json data by canvas https://simple2canvas.netlify.com/
 
 ## Installation
 
@@ -93,7 +93,7 @@ const options = {
 ## Example
 run npm start and open http://localhost:3000
 
-online example: http://lizheming.github.io/simple2canvas/dist
+online example: https://simple2canvas.netlify.com/
 
 ## License
 simple2canvas is released under the MIT license.
