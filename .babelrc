@@ -1,0 +1,17 @@
+{
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {"ie": 9},
+          "loose": true
+        }
+      ]
+    ],
+    "plugins": [
+      "transform-async-to-promises",
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-proposal-class-properties"
+    ]
+  }
+  

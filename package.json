@@ -23,7 +23,15 @@
   },
   "homepage": "https://github.com/lizheming/Simple2Canvas#readme",
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "babel-plugin-transform-async-to-promises": "^0.8.15",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "babel-loader": "^8.0.6"
   }
 }
