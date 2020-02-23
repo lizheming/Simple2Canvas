@@ -71,7 +71,7 @@ export default class HTMLRender extends Render {
   //文字
   text({text, top, left, fontSize, lineHeight, color, textAlign, fontWeight, width}) {
     const {ctx} = this;
-    [top, left, fontSize, lineHeight, width] = [top, left, fontSize, lineHeight, width].map(v => v * this.rate);
+    [top, left, fontSize, lineHeight, width] = [top, left, fontSize, lineHeight, width].filter(v => typeof v === 'number').map(v => v * this.rate);
 
     ctx.save();
     ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
