@@ -1,0 +1,24 @@
+{
+  "name": "simple2canvas",
+  "version": "0.1.0",
+  "description": "generate image with json data by canvas",
+  "main": "src/index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lizheming/Simple2Canvas.git"
+  },
+  "keywords": [
+    "canvas",
+    "json",
+    "image",
+    "generate"
+  ],
+  "author": "lizheming <i@imnerd.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lizheming/Simple2Canvas/issues"
+  },
+  "homepage": "https://github.com/lizheming/Simple2Canvas#readme"
+}
