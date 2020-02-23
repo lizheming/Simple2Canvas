@@ -44,6 +44,15 @@ export default class HTMLRender extends Render {
       const img = document.createElement('img');
       img.crossOrigin = '*';
       img.onload = function() {
+        if(!width && !height) {
+          width = img.width;
+          height = img.height;
+        } else if(!width) {
+          width = img.width / img.height * height;
+        } else if(!height) {
+          height = img.height / img.widht * width;
+        }
+        
         ctx.drawImage(img, x, y, width, height);
         img.parentNode.removeChild(img);
         resolve();
