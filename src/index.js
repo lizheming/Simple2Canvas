@@ -1,6 +1,7 @@
 import Render from './render/render';
 import HTMLRender from './render/html';
 import NodeRender from './render/node';
+import utils from './helper';
 
 const Renders = {
   html: HTMLRender,
@@ -32,5 +33,6 @@ function generator({width, height, rate = 1, render = 'html', elements}) {
 
 generator.Render = Render;
 generator.Renders = Renders;
+generator.utils = utils;
 
 export default generator;
