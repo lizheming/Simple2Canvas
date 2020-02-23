@@ -1,5 +1,8 @@
 module.exports = {
   name: 'Simple2Canvas',
+  output: {
+    dir: 'docs'
+  },
   staticFolder: 'dist',
   homePage: 'https://github.com/lizheming/Simple2Canvas',
   boxTheme: 'monokai',
