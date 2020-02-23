@@ -2,7 +2,7 @@
   "name": "simple2canvas",
   "version": "0.1.0",
   "description": "generate image with json data by canvas",
-  "main": "src/index.js",
+  "main": "dist/simple2canvas.umd.min.js",
   "scripts": {
     "build": "webpack --mode=production",
     "demo:dev": "demosify --serve",
