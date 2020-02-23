@@ -2,5 +2,9 @@
   {
     "label": "Quick Start",
     "src": "simple"
+  },
+  {
+    "label": "Custom Type",
+    "src": "custom_type"
   }
 ]
