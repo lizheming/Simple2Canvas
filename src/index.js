@@ -1,11 +1,12 @@
+import Render from './render/render';
 import HTMLRender from './render/html';
 
 const Renders = {
   html: HTMLRender
 };
 
-export default function generator({width, height, rate = 1, render = 'html', elements}) {
-  const Render = Renders[render] || Renders.html;
+function generator({width, height, rate = 1, render = 'html', elements}) {
+  const Render = typeof render === 'function' ? render : (Renders[render] || Renders.html);
   render = new Render(width, height);
 
   elements = elements.filter(({type}) => typeof type === 'function' || typeof render[type] === 'function');
@@ -15,3 +16,8 @@ export default function generator({width, height, rate = 1, render = 'html', ele
 
   return processes.then(() => render.canvas);
 }
+
+generator.Render = Render;
+generator.Renders = Renders;
+
+export default generator;
