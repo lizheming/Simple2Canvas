@@ -12,8 +12,9 @@ export default class HTMLRender extends Render {
 
   //矩形
   rect({top: y, left: x, width: w, height: h, fill, round: r}) {
-    ctx.fillStyle = fill;
+    const {ctx} = this;
 
+    ctx.fillStyle = fill;
     if(r) {
       if (w < 2 * r) r = w / 2;
       if (h < 2 * r) r = h / 2;
@@ -34,6 +35,7 @@ export default class HTMLRender extends Render {
 
   //图片
   image({url, top: y, left: x, width, height}) {
+    const {ctx} = this;
     return new Promise((resolve, reject) => {
       ctx.save();
       const img = document.createElement('img');
@@ -49,23 +51,26 @@ export default class HTMLRender extends Render {
     })
   }
 
-  //单行文字
-  text(ctx, {text, top, left, fontSize, lineHeight, color, textAlign, fontWeight}) {
-    top = top + lineHeight - Math.max((lineHeight - fontSize)/2, 0);
-    
+  //文字
+  text({text, top, left, fontSize, lineHeight, color, textAlign, fontWeight}) {
+    const {ctx} = this;
+    ctx.save();
+
+    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
     ctx.fillStyle = color;
     ctx.textAlign = textAlign || 'left';
-    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
 
+    top = top + lineHeight - Math.max((lineHeight - fontSize)/2, 0);
     ctx.fillText(text, left, top);
     ctx.restore();
     return Promise.resolve(this);
   }
 
   //多行文字
-  wrapText(ctx, {text, top, left, fontSize, lineHeight, color, width, height, textAlign, fontWeight}) {
+  wrapText({text, top, left, fontSize, lineHeight, color, width, height, textAlign, fontWeight}) {
+    const {ctx} = this;
+    
     ctx.save();
-    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
     var arrText = text.split('');
     var line = '';
     var result = [];
