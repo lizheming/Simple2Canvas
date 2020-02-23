@@ -11,6 +11,14 @@ function generator({width, height, rate = 1, render = 'html', elements}) {
 
   elements = elements.filter(({type}) => typeof type === 'function' || typeof render[type] === 'function');
   const processes = elements.reduce((defer, opt) => {
+    if(typeof opt.right === 'number' && typeof opt.width === 'number') {
+      opt.left = width - opt.width - opt.right;
+      delete opt.right;
+    }
+    if(typeof opt.bottom === 'number' && typeof opt.height === 'number') {
+      opt.top = height - opt.height - opt.bottom;
+      delete opt.bottom;
+    }
     return defer.then(() => typeof opt.type === 'function' ? opt.type.call(render, opt) : render[opt.type](opt))
   }, Promise.resolve());
 
