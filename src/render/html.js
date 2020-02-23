@@ -2,6 +2,8 @@ import Render from './render';
 
 export default class HTMLRender extends Render {
   constructor(width, height) {
+    super(width, height);
+
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
@@ -14,6 +16,7 @@ export default class HTMLRender extends Render {
   rect({top: y, left: x, width: w, height: h, fill, round: r}) {
     const {ctx} = this;
 
+    ctx.save();
     ctx.fillStyle = fill;
     if(r) {
       if (w < 2 * r) r = w / 2;

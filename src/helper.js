@@ -1,4 +1,4 @@
-export const getTextWidth = function({
+const getTextWidth = function({
   fontWeight,
   fontSize,
   width,
@@ -35,3 +35,7 @@ export const getTextWidth = function({
   result.push({line, top, left});
   return result;
 }
+
+export default {
+  getTextWidth
+};

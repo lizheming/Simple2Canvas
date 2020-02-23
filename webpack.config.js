@@ -13,6 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename,
     library: pkgName,
+    libraryExport: 'default',
     libraryTarget: 'umd'
   },
   module: {
