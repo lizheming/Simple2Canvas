@@ -15,7 +15,7 @@ export default class HTMLRender extends Render {
 
   //矩形
   rect({top: y, left: x, width: w, height: h, fill, round: r}) {
-    [x, y, w, h] = [x, y, w, h].map(v => v * this.rate);
+    [x, y, w, h, r] = [x, y, w, h, r].map(v => v * this.rate);
 
     const {ctx} = this;
 
