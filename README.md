@@ -16,10 +16,11 @@ npm install simple2canvas --save-dev
 ## Usage
 
 ```js
-const simple2canvas = require('simple2canvas);
+const simple2canvas = require('simple2canvas');
 const options = {
   width: 360,
   height: 360,
+  rate: 2,
   elements: [
     {
       type: 'rect',
@@ -45,6 +46,8 @@ const options = {
   const canvas = await simple2canvas(options);
   
   const img = document.createElement('img');
+  img.style.width = options.width + 'px';
+  img.style.height = options.height + 'px';
   img.src = canvas.toDataURL();
   document.body.appendChild(img);
 })();
