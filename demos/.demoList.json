@@ -6,5 +6,9 @@
   {
     "label": "Custom Type",
     "src": "custom_type"
+  },
+  {
+    "label": "Advanced",
+    "src": "advanced"
   }
 ]
