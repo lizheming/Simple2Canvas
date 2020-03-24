@@ -1,3 +1,21 @@
+const isNumber = function(num) {
+  return typeof num === 'number' && !isNaN(num);
+}
+
+const isFunction = function(fn) {
+  return typeof fn === 'function';
+}
+
+const formatCoord = function({top, left, width, height, right, bottom}, {width: canvasWidth, height: canvasHeight}) {
+  if(isNumber(right) && isNumber(width)) {
+    left = canvasWidth - width - right;
+  }
+  if(isNumber(bottom) && isNumber(height)) {
+    top = canvasHeight - height - bottom;
+  }
+  return {top, left};
+}
+
 const getTextWidth = function({
   fontWeight,
   fontSize,
@@ -37,5 +55,8 @@ const getTextWidth = function({
 }
 
 export default {
-  getTextWidth
+  getTextWidth,
+  isNumber,
+  isFunction,
+  formatCoord
 };

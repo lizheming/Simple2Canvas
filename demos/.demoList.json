@@ -4,6 +4,10 @@
     "src": "simple"
   },
   {
+    "label": "Group",
+    "src": "group"
+  },
+  {
     "label": "Custom Type",
     "src": "custom_type"
   },
