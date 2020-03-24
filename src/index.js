@@ -53,8 +53,6 @@ function generator({width, height, rate = 1, render = 'html', elements}) {
     delete element.right;
     delete element.bottom;
 
-    console.log(JSON.stringify(element, null, '\t'));
-
     if(element.__GROUP_POS__) {
       const {top, left} = formatCoord(element.__GROUP_POS__, {width, height});
       isNumber(top) && (element.top += top);

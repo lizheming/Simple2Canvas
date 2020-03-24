@@ -1,3 +1,65 @@
+//单个数字显示
+function ncovCountGroup({top, left, width, height, diffPrefix, diffCount, count, color, name}) {
+  const DIFF_FONT_SIZE = 13;
+  const {width: diffWidth} = simple2canvas.utils.getTextWidth({text: diffPrefix + diffCount, fontSize: DIFF_FONT_SIZE});
+  const {width: prefixWdith} = simple2canvas.utils.getTextWidth({text: diffPrefix, fontSize: DIFF_FONT_SIZE});
+  const diffLeft = (width - diffWidth) / 2;
+  const diffCountLeft = diffLeft + prefixWdith;
+  const COUNT_TOP = DIFF_FONT_SIZE + 5;
+  const NAME_TOP = COUNT_TOP + 19 + 5;
+
+  return {
+    type: 'group',
+    top,
+    left,
+    width,
+    height,
+    elements: [
+      {
+        type: 'text',
+        text: diffPrefix,
+        fontSize: DIFF_FONT_SIZE,
+        lineHeight: DIFF_FONT_SIZE,
+        color: '#666666',
+        top: 0,
+        left: diffLeft
+      },
+      {
+        type: 'text',
+        text: diffCount,
+        fontSize: DIFF_FONT_SIZE,
+        lineHeight: DIFF_FONT_SIZE,
+        color,
+        top: 0,
+        left: diffCountLeft
+      },
+      {
+        type: 'text',
+        text: count,
+        color,
+        fontSize: 19,
+        lineHeight: 19,
+        top: COUNT_TOP,
+        textAlign: 'center',
+        fontWeight: 600,
+        left: width / 2
+      },
+      {
+        type: 'text',
+        text: name,
+        fontSize: 11,
+        fontWeight: 500,
+        color: '#222',
+        lineHeight: 11,
+        top: NAME_TOP,
+        textAlign: 'center',
+        left: width/2
+      }
+    ]
+  };
+}
+
+//双排数字显示
 function drawTotalNumber({top, left, tabHasDiff, tabList}) {
   const PER_ROW = 3; //每行个数
   const BLOCK_WIDTH = 103;
@@ -14,59 +76,7 @@ function drawTotalNumber({top, left, tabHasDiff, tabList}) {
       LEFT: (i % PER_ROW) * (BLOCK_WIDTH + 1)
     };
 
-    const DIFF_FONT_SIZE = 13;
-    if(tabHasDiff && diffPrefix && diffCount) {
-      const {width: diffWidth} = simple2canvas.utils.getTextWidth({text: diffPrefix + diffCount, fontSize: DIFF_FONT_SIZE});
-      const {width: prefixWdith} = simple2canvas.utils.getTextWidth({text: diffPrefix, fontSize: DIFF_FONT_SIZE});
-      const diffLeft = RECT.LEFT + (BLOCK_WIDTH - diffWidth) / 2;
-      const diffCountLeft = diffLeft + prefixWdith;
-  
-      ret.push({
-        type: 'text',
-        text: diffPrefix,
-        fontSize: DIFF_FONT_SIZE,
-        lineHeight: DIFF_FONT_SIZE,
-        color: '#666666',
-        top: RECT.TOP,
-        left: diffLeft
-      });
-      ret.push({
-        type: 'text',
-        text: diffCount,
-        fontSize: DIFF_FONT_SIZE,
-        lineHeight: DIFF_FONT_SIZE,
-        color,
-        top: RECT.TOP,
-        left: diffCountLeft
-      });
-    }
-
-    const COUNT_TOP = RECT.TOP + (tabHasDiff ? DIFF_FONT_SIZE + 5 : 0);
-    ret.push({
-      type: 'text',
-      text: count,
-      color,
-      fontSize: 19,
-      lineHeight: 19,
-      top: COUNT_TOP,
-      textAlign: 'center',
-      fontWeight: 600,
-      left: RECT.LEFT + (BLOCK_WIDTH / 2)
-    });
-
-    const NAME_TOP = COUNT_TOP + 19 + 5;
-    ret.push({
-      type: 'text',
-      text: name,
-      fontSize: 11,
-      fontWeight: 500,
-      color: '#222',
-      lineHeight: 11,
-      top: NAME_TOP,
-      textAlign: 'center',
-      left: RECT.LEFT + (BLOCK_WIDTH/2)
-    })
-
+    ret.push(ncovCountGroup({top: RECT.TOP, left: RECT.LEFT, width: BLOCK_WIDTH, height: BLOCK_HEIGHT, diffPrefix, diffCount, name, color, count}));
     if(i%PER_ROW === PER_ROW - 1) {
       continue;
     }
@@ -109,12 +119,16 @@ function drawTotalNumber({top, left, tabHasDiff, tabList}) {
   });
 
   return {
+    type: 'group',
+    top,
+    left,
     width: 311,
     height: BLOCK_HEIGHT * 2 + BLOCK_MARGIN_BOTTOM,
     elements: ret
   }; 
 }
 
+//全国总数显示
 function drawTotalCount({top, left, tabHasDiff, tabList, modifyTime, name}) {
   let height = 0;
   const ret = [];
@@ -155,15 +169,20 @@ function drawTotalCount({top, left, tabHasDiff, tabList, modifyTime, name}) {
   height += 12 + 20;
   
   const totalNumber = drawTotalNumber({top: height + top, left: 25, tabHasDiff, tabList});
+  (JSON.stringify(totalNumber, null, '\t'));
   height += totalNumber.height;
 
   return {
+    type: 'group',
+    top: 0,
+    left: 0,
     width: 330,
     height,
     elements: ret.concat(totalNumber.elements)
   };
 }
 
+//全国非湖北总数显示
 function drawTotalExceptHubeiCount({top, left, tabList, modifyTime, name}) {
   let height = 0;
   const ret = [];
@@ -200,27 +219,36 @@ function drawTotalExceptHubeiCount({top, left, tabList, modifyTime, name}) {
   height += totalNumber.height;
 
   return {
+    type: 'group',
+    left: 0,
+    top: 0,
     width: 330,
     height,
     elements: ret.concat(totalNumber.elements)
   };
 }
 
+//图表显示
 function drawChartList({top, left, chartList}) {
   return {
+    type: 'group',
+    top,
+    left,
     width: chartList[0].width,
     height: chartList[ chartList.length - 1 ].top + chartList[0].height,
     elements: chartList.map(chart => {
       chart.type = 'image';
-      chart.top += top;
-      chart.left += left;
       return chart;
     })
   };
 }
 
+//底部显示
 function drawFooter({top, left, qrCode}) {
   return {
+    type: 'group',
+    top,
+    left,
     width: 330,
     height: 87,
     elements: [
@@ -243,16 +271,16 @@ function drawFooter({top, left, qrCode}) {
         left: 15,
         top: 63
       }
-    ].map(ele => {
-      ele.top += top;
-      ele.left += left;
-      return ele;
-    })
+    ]
   };
 }
 
+//背景部分
 function drawBackground({width, height, banner, content}) {
   return {
+    type: 'group',
+    top: 0,
+    left: 0,
     width,
     height,
     elements: [
@@ -303,30 +331,35 @@ function drawBackground({width, height, banner, content}) {
   };
 }
 
+//治愈地图部分
 function drawCuredMap({top, left, mapList}) {
   const width = 330;
   let height = 0;
   const ret = [];
 
-  ret.push({type: 'text', text: '治愈人数分布地图', width, left: 180, top, textAlign: 'center', fontWeight: 600, fontSize: 14, lineHeight: 14, color: '#222'});
+  ret.push({type: 'text', text: '治愈人数分布地图', width, left: 180, top: 0, textAlign: 'center', fontWeight: 600, fontSize: 14, lineHeight: 14, color: '#222'});
   height += 28;
 
   ret.push({
     type: 'image',
     url: mapList,
-    top: top + height,
-    left,
+    top: height,
+    left: 0,
     width,
     height: 330 / 4 * 3
   });
   height += 330 / 4 * 3;
 
   return {
+    type: 'group',
+    top,
+    left,
     width: 330,
     height,
     elements: ret
   };
 }
+
 function createOptions({country, countryExceptHubei, mapList, chartList, qrCode}) {
   const options = {
     width: 360,
@@ -383,14 +416,14 @@ function createOptions({country, countryExceptHubei, mapList, chartList, qrCode}
 
   const background = drawBackground({width: options.width, height: options.height, banner: 'https://p2.ssl.qhimgs4.com/t011c90ac743cf16dfb.png', content});
 
-  options.elements = options.elements
-    .concat(background.elements)
-    .concat(footer.elements)
-    .concat(countryCount.elements)
-    .concat(countryExceptHubeiCount.elements)
-    .concat(mapList.elements)
-    .concat(chartList.elements)
-
+  options.elements = options.elements.concat([
+    background,
+    footer,
+    countryCount,
+    countryExceptHubeiCount,
+    mapList,
+    chartList
+  ]);
   return options;
 }
 
@@ -554,7 +587,6 @@ function createOptions({country, countryExceptHubei, mapList, chartList, qrCode}
     ],
     qrCode: 'https://p2.ssl.qhimgs4.com/t01da7e4ceb14e4fd65.png'
   });
-  console.log(options);
   const canvas = await simple2canvas(options);
   const img = document.createElement('img');
   img.style.width = options.width + 'px';
