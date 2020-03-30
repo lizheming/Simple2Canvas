@@ -14,5 +14,9 @@
   {
     "label": "Advanced",
     "src": "advanced"
+  },
+  {
+    "label": "Advanced2",
+    "src": "advanced2"
   }
 ]

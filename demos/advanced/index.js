@@ -128,236 +128,233 @@ function drawTotalNumber({top, left, tabHasDiff, tabList}) {
   }; 
 }
 
-//全国总数显示
-function drawTotalCount({top, left, tabHasDiff, tabList, modifyTime, name}) {
-  let height = 0;
-  const ret = [];
-
-  // 定位icon
-  ret.push({
-    type: 'image',
-    url: 'https://p1.ssl.qhimg.com/t01a17ec0a50e2b4fa6.png',
-    top: top + 6,
-    left: 145,
-    width: 13,
-    height: 18
-  });
-  ret.push({
-    type: 'text',
-    text: name,
-    left: 164,
-    top,
-    fontSize: 24,
-    lineHeight: 24,
-    fontWeight: 600,
-    color: 'rgba(243,74,75,1)'
-  });
-  height += 24 + 8;
-
-  ret.push({
-    type: 'text',
-    text: `截至 ${modifyTime} 疫情数据结果`,
-    textAlign: 'center',
-    left: 180,
-    top: height + top,
-    width: 330,
-    fontSize: 12,
-    lineHeight: 12,
-    // fontWeight: 600,
-    color: 'rgba(136,136,136,1)'
-  });
-  height += 12 + 20;
-  
-  const totalNumber = drawTotalNumber({top: height + top, left: 25, tabHasDiff, tabList});
-  (JSON.stringify(totalNumber, null, '\t'));
-  height += totalNumber.height;
-
-  return {
-    type: 'group',
-    top: 0,
-    left: 0,
-    width: 330,
-    height,
-    elements: ret.concat(totalNumber.elements)
-  };
-}
-
-//全国非湖北总数显示
-function drawTotalExceptHubeiCount({top, left, tabList, modifyTime, name}) {
-  let height = 0;
-  const ret = [];
-
-  ret.push({
-    type: 'text',
-    text: name,
-    textAlign: 'center',
-    left: 180,
-    top,
-    width: 330,
-    fontSize: 19,
-    lineHeight: 19,
-    fontWeight: 600,
-    color: 'rgba(243,74,75,1)'
-  });
-  height += 19 + 8;
-
-  ret.push({
-    type: 'text',
-    text: `截至 ${modifyTime} 疫情数据结果`,
-    textAlign: 'center',
-    left: 180,
-    top: height + top,
-    width: 330,
-    fontSize: 12,
-    lineHeight: 12,
-    // fontWeight: 600,
-    color: 'rgba(136,136,136,1)'
-  });
-  height += 12 + 20;
-  
-  const totalNumber = drawTotalNumber({top: height + top, left: 25, tabHasDiff: true, tabList});
-  height += totalNumber.height;
-
-  return {
-    type: 'group',
-    left: 0,
-    top: 0,
-    width: 330,
-    height,
-    elements: ret.concat(totalNumber.elements)
-  };
-}
-
-//图表显示
-function drawChartList({top, left, chartList}) {
-  return {
-    type: 'group',
-    top,
-    left,
-    width: chartList[0].width,
-    height: chartList[ chartList.length - 1 ].top + chartList[0].height,
-    elements: chartList.map(chart => {
-      chart.type = 'image';
-      return chart;
-    })
-  };
-}
-
-//底部显示
-function drawFooter({top, left, qrCode}) {
-  return {
-    type: 'group',
-    top,
-    left,
-    width: 330,
-    height: 87,
-    elements: [
-      {type: 'image', url: qrCode, top: 0, left: 243, width: 87, height: 87},
-      // 快资讯logo
-      {
-        type: 'image',
-        url: 'https://p1.ssl.qhimg.com/t01c2572a1effaa3fa8.png',
-        width: 60,
-        height: 15,
-        left: 15,
-        top: 41
-      },
-      {
-        type: 'text',
-        text: '长按识别二维码，查看全国疫情实时动态',
-        fontSize: 10,
-        color: '#fff',
-        lineHeight: 13,
-        left: 15,
-        top: 63
-      }
-    ]
-  };
-}
-
-//背景部分
-function drawBackground({width, height, banner, content}) {
-  return {
-    type: 'group',
-    top: 0,
-    left: 0,
-    width,
-    height,
-    elements: [
-      {
-        type: 'rect',
-        fill: '#0091f9',
-        top: 0,
-        left: 0,
-        width,
-        height
-      },
-      {
-        type: 'image',
-        url: banner,
-        top: 0,
-        left: 0,
-        width,
-        height: 166
-      },
-      content,
-      // 中国背景 
-      {
-        type: function({url, top: y, left: x, width, height}) {
-          const ctx = this.ctx;
-          return new Promise((resolve, reject) => {
-            const img = document.createElement('img');
-            img.crossOrigin = '*';
-            img.onload = function() {
-              ctx.save();
-              ctx.clip();
-              ctx.drawImage(img, x, y, width, height);
-              ctx.restore();
-              img.parentNode.removeChild(img);
-              resolve();
-            }
-            img.onerror = reject;
-            img.src = url;
-            document.body.appendChild(img);
-          })
+const SPIRITS = {
+  //背景部分
+  BACKGROUND({banner, content, width, height}) {
+    return {
+      type: 'group',
+      top: 0,
+      left: 0,
+      width,
+      height,
+      elements: [
+        {
+          type: 'rect',
+          fill: '#0091f9',
+          top: 0,
+          left: 0,
+          width,
+          height
         },
-        url: 'https://p0.ssl.qhimg.com/t014f2d80d4ff89f4eb.png',
-        top: content.top,
-        left: 15,
-        width: 330,
-        height: 165
-      },
-    ]
-  };
-}
+        {
+          type: 'image',
+          url: banner,
+          top: 0,
+          left: 0,
+          width,
+          height: 166
+        },
+        content,
+        // 中国背景 
+        {
+          type: function({url, top: y, left: x, width, height}) {
+            const ctx = this.ctx;
+            return new Promise((resolve, reject) => {
+              const img = document.createElement('img');
+              img.crossOrigin = '*';
+              img.onload = function() {
+                ctx.save();
+                ctx.clip();
+                ctx.drawImage(img, x, y, width, height);
+                ctx.restore();
+                img.parentNode.removeChild(img);
+                resolve();
+              }
+              img.onerror = reject;
+              img.src = url;
+              document.body.appendChild(img);
+            })
+          },
+          url: 'https://p0.ssl.qhimg.com/t014f2d80d4ff89f4eb.png',
+          top: content.top,
+          left: 15,
+          width: 330,
+          height: 165
+        },
+      ]
+    };
+  },
+  //全国总数显示
+  TOTAL_COUNT({tabHasDiff, tabList, modifyTime, name}, {top, left}) {
+    let height = 0;
+    const ret = [];
+  
+    // 定位icon
+    ret.push({
+      type: 'image',
+      url: 'https://p1.ssl.qhimg.com/t01a17ec0a50e2b4fa6.png',
+      top: top + 6,
+      left: 145,
+      width: 13,
+      height: 18
+    });
+    ret.push({
+      type: 'text',
+      text: name,
+      left: 164,
+      top,
+      fontSize: 24,
+      lineHeight: 24,
+      fontWeight: 600,
+      color: 'rgba(243,74,75,1)'
+    });
+    height += 24 + 8;
+  
+    ret.push({
+      type: 'text',
+      text: `截至 ${modifyTime} 疫情数据结果`,
+      textAlign: 'center',
+      left: 180,
+      top: height + top,
+      width: 330,
+      fontSize: 12,
+      lineHeight: 12,
+      // fontWeight: 600,
+      color: 'rgba(136,136,136,1)'
+    });
+    height += 12 + 20;
+    
+    const totalNumber = drawTotalNumber({top: height + top, left: 25, tabHasDiff, tabList});
+    (JSON.stringify(totalNumber, null, '\t'));
+    height += totalNumber.height;
+  
+    return {
+      type: 'group',
+      top: 0,
+      left: 0,
+      width: 330,
+      height,
+      elements: ret.concat(totalNumber.elements)
+    };
+  },
+  //全国非湖北总数显示
+  TOTAL_COUNT_EXCEPT_HUBEI({tabList, modifyTime, name}, {top, left}) {
+    let height = 0;
+    const ret = [];
 
-//治愈地图部分
-function drawCuredMap({top, left, mapList}) {
-  const width = 330;
-  let height = 0;
-  const ret = [];
+    ret.push({
+      type: 'text',
+      text: name,
+      textAlign: 'center',
+      left: 180,
+      top,
+      width: 330,
+      fontSize: 19,
+      lineHeight: 19,
+      fontWeight: 600,
+      color: 'rgba(243,74,75,1)'
+    });
+    height += 19 + 8;
 
-  ret.push({type: 'text', text: '治愈人数分布地图', width, left: 180, top: 0, textAlign: 'center', fontWeight: 600, fontSize: 14, lineHeight: 14, color: '#222'});
-  height += 28;
+    ret.push({
+      type: 'text',
+      text: `截至 ${modifyTime} 疫情数据结果`,
+      textAlign: 'center',
+      left: 180,
+      top: height + top,
+      width: 330,
+      fontSize: 12,
+      lineHeight: 12,
+      // fontWeight: 600,
+      color: 'rgba(136,136,136,1)'
+    });
+    height += 12 + 20;
+    
+    const totalNumber = drawTotalNumber({top: height + top, left: 25, tabHasDiff: true, tabList});
+    height += totalNumber.height;
 
-  ret.push({
-    type: 'image',
-    url: mapList,
-    top: height,
-    left: 0,
-    width,
-    height: 330 / 4 * 3
-  });
-  height += 330 / 4 * 3;
+    return {
+      type: 'group',
+      left: 0,
+      top: 0,
+      width: 330,
+      height,
+      elements: ret.concat(totalNumber.elements)
+    };
+  },
+  //治愈地图部分
+  MAPS({mapList}, {top, left}) {
+    const width = 330;
+    let height = 0;
+    const ret = [];
 
-  return {
-    type: 'group',
-    top,
-    left,
-    width: 330,
-    height,
-    elements: ret
-  };
+    ret.push({type: 'text', text: '治愈人数分布地图', width, left: 180, top: 0, textAlign: 'center', fontWeight: 600, fontSize: 14, lineHeight: 14, color: '#222'});
+    height += 28;
+
+    ret.push({
+      type: 'image',
+      url: mapList,
+      top: height,
+      left: 0,
+      width,
+      height: 330 / 4 * 3
+    });
+    height += 330 / 4 * 3;
+
+    return {
+      type: 'group',
+      top,
+      left,
+      width: 330,
+      height,
+      elements: ret
+    };
+  },
+  //图表显示
+  CHARTS({chartList}, {top, left}) {
+    return {
+      type: 'group',
+      top,
+      left,
+      width: chartList[0].width,
+      height: chartList[ chartList.length - 1 ].top + chartList[0].height,
+      elements: chartList.map(chart => {
+        chart.type = 'image';
+        return chart;
+      })
+    };
+  },
+  //底部显示
+  FOOTER({qrCode}, {top, left}) {
+    return {
+      type: 'group',
+      top,
+      left,
+      width: 330,
+      height: 87,
+      elements: [
+        {type: 'image', url: qrCode, top: 0, left: 243, width: 87, height: 87},
+        // 快资讯logo
+        {
+          type: 'image',
+          url: 'https://p1.ssl.qhimg.com/t01c2572a1effaa3fa8.png',
+          width: 60,
+          height: 15,
+          left: 15,
+          top: 41
+        },
+        {
+          type: 'text',
+          text: '长按识别二维码，查看全国疫情实时动态',
+          fontSize: 10,
+          color: '#fff',
+          lineHeight: 13,
+          left: 15,
+          top: 63
+        }
+      ]
+    };
+  }
 }
 
 function createOptions({country, countryExceptHubei, mapList, chartList, qrCode}) {
@@ -380,50 +377,46 @@ function createOptions({country, countryExceptHubei, mapList, chartList, qrCode}
   };
 
   //全国数
-  const countryCount = drawTotalCount({
-    top: content.top + content.height, 
-    left: 25, 
+  const countryCount = SPIRITS.TOTAL_COUNT({
     name: country.name,
     modifyTime: country.modifyTime,
     tabList: country.tabList,
     tabHasDiff: true
-  });
+  }, { top: content.top + content.height, left: 25 });
   content.height += countryCount.height + 32;
 
   //全国非湖北数
-  const countryExceptHubeiCount = drawTotalExceptHubeiCount({
-    top: content.top + content.height, 
-    left: countryCount.left, 
+  const countryExceptHubeiCount = SPIRITS.TOTAL_COUNT_EXCEPT_HUBEI({
     name: countryExceptHubei.name,
     modifyTime: countryExceptHubei.modifyTime,
     tabList: countryExceptHubei.tabList
-  });
+  }, { top: content.top + content.height, left: countryCount.left });
   content.height += countryExceptHubeiCount.height + 32;
 
   //治愈地图
-  mapList = drawCuredMap({top: content.height + content.top, left: content.left, mapList});
+  mapList = SPIRITS.MAPS({mapList}, { top: content.height + content.top, left: content.left });
   content.height += mapList.height + 32;  
 
   //图表
-  chartList = drawChartList({top: content.height + content.top, left: content.left + 10, chartList});
+  chartList = SPIRITS.CHARTS({chartList}, {top: content.height + content.top, left: content.left + 10});
   content.height += chartList.height + 20;
 
   //主体内容结束，清算主体内容的高度到画布上
   options.height += content.top + content.height + 15;
   //footer区域
-  const footer = drawFooter({top: options.height, left: 15, qrCode});
+  const footer = SPIRITS.FOOTER({qrCode}, {top: options.height, left: 15});
   options.height += footer.height + 15;
 
-  const background = drawBackground({width: options.width, height: options.height, banner: 'https://p2.ssl.qhimgs4.com/t011c90ac743cf16dfb.png', content});
+  const background = SPIRITS.BACKGROUND({width: options.width, height: options.height, banner: 'https://p2.ssl.qhimgs4.com/t011c90ac743cf16dfb.png', content});
 
-  options.elements = options.elements.concat([
+  options.elements = [
     background,
     footer,
     countryCount,
     countryExceptHubeiCount,
     mapList,
     chartList
-  ]);
+  ];
   return options;
 }
 
