@@ -1,13 +1,7 @@
 import Render from './render/render';
-import HTMLRender from './render/html';
-import NodeRender from './render/node';
+import Renders from './render';
 import utils from './helper';
-
 const {isNumber, isFunction, formatCoord} = utils;
-const Renders = {
-  html: HTMLRender,
-  node: NodeRender
-};
 
 function generator({width, height, rate = 1, render = 'html', elements}) {
   const Render = isFunction(render) ? render : (Renders[render] || Renders.html);

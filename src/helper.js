@@ -1,3 +1,5 @@
+import Renders from './render';
+
 const isNumber = function(num) {
   return typeof num === 'number' && !isNaN(num);
 }
@@ -24,11 +26,11 @@ const getTextWidth = function({
   top,
   left,
   lineHeight
-}) {
-  const canvas = document.createElement('canvas');
-  canvas.width = window.screen.width;
-  canvas.height = window.screen.height;
-  const ctx = canvas.getContext('2d');
+}, render = 'html') {
+  const Render = isFunction(render) ? render : (Renders[render] || Renders.html);
+  render = new Render(width,  height);
+  const ctx = render.ctx;
+  
   ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
   if(!width) {
     const metrics = ctx.measureText(text);
