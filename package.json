@@ -1,6 +1,6 @@
 {
   "name": "simple2canvas",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "generate image with json data by canvas",
   "main": "dist/simple2canvas.umd.min.js",
   "scripts": {
