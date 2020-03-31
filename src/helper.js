@@ -28,7 +28,7 @@ const getTextWidth = function({
   lineHeight
 }, render = 'html') {
   const Render = isFunction(render) ? render : (Renders[render] || Renders.html);
-  render = new Render(width,  height);
+  render = new Render(10000,  10000, {rate: 1});
   const ctx = render.ctx;
   
   ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
