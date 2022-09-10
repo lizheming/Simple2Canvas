@@ -69,12 +69,12 @@ export default class HTMLRender extends Render {
   }
 
   //文字
-  text({text, top, left, fontSize, lineHeight, color, textAlign, fontWeight, width}) {
+  text({text, top, left, fontSize, lineHeight, color, textAlign, fontFamily, fontWeight, width}) {
     const {ctx} = this;
     [top, left, fontSize, lineHeight, width] = [top, left, fontSize, lineHeight, width].filter(v => typeof v === 'number').map(v => v * this.rate);
 
     ctx.save();
-    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
+    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', fontFamily || 'Arial'].filter(v => v).join(' ');
     ctx.fillStyle = color;
     ctx.textAlign = textAlign || 'left';
 
@@ -85,11 +85,11 @@ export default class HTMLRender extends Render {
   }
 
   //多行文字
-  wrapText({text, top, left, fontSize, lineHeight, color, width, height, textAlign, fontWeight}) {
+  wrapText({text, top, left, fontSize, lineHeight, color, width, height, textAlign, fontFamily, fontWeight}) {
     const {ctx} = this; 
     
     ctx.save();
-    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
+    ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', fontFamily || 'Arial'].filter(v => v).join(' ');
     var arrText = text.split('');
     var line = '';
     var result = [];

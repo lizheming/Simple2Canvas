@@ -20,6 +20,7 @@ const formatCoord = function({top, left, width, height, right, bottom}, {width: 
 
 const getTextWidth = function({
   fontWeight,
+  fontFamily,
   fontSize,
   width,
   text,
@@ -31,7 +32,7 @@ const getTextWidth = function({
   render = new Render(10000,  10000, {rate: 1});
   const ctx = render.ctx;
   
-  ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', 'Arial'].filter(v => v).join(' ');
+  ctx.font = [fontWeight, fontSize ? fontSize + 'px' : '', fontFamily || 'Arial'].filter(v => v).join(' ');
   if(!width) {
     const metrics = ctx.measureText(text);
     return metrics;

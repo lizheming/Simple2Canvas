@@ -92,6 +92,7 @@ const options = {
 - `color`
 - `textAlign`
 - `fontWeight`
+- `fontFamily`
 
 ## Example
 run npm start and open http://localhost:3000

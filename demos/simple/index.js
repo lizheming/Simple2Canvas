@@ -4,7 +4,7 @@ const options = {
   rate: 3,
   elements: [
     {type: 'rect', fill: '#FFF', width: 360, height: 360, top: 0, left: 0},
-    {type: 'text', text: 'Hello World!', top: 10, left: 10, fontSize: 20, lineHeight: 30}
+    {type: 'text', text: 'Hello World!', top: 10, left: 10, fontSize: 20, fontFamily: 'Courier New', lineHeight: 30}
   ]
 };
 
