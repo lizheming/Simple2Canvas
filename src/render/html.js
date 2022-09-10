@@ -112,7 +112,7 @@ export default class HTMLRender extends Render {
       if(height && (idx + 1) * lineHeight > height) {
         return;
       }
-      this.text({text, top, left, fontSize, lineHeight, color, width, textAlign, fontWeight});
+      this.text({text, top, left, fontSize, lineHeight, color, width, textAlign, fontFamily, fontWeight});
     });
     return result;
   }
